@@ -43,7 +43,7 @@ Configure amazon keys (aws_secret_key and aws_access_key) which can be retrieved
 $ aws configure
 AWS Access Key ID [None]: aws_access_key
 AWS Secret Access Key [None]: aws_secret_key
-Default region name [None]: us-west-2
+Default region name [None]: eu-central-1
 Default output format [None]: json
 ```
 
