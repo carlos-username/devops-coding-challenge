@@ -6,7 +6,7 @@ The goal is to create a docker microservice in Amazon ECS and a healthcheck scri
 - Publicly accesible on port 80
 - Returning the current time in json format on /now
 - Deployment by using CloudFormation, and a server configuration management tool if needed (Ansible will be used).
-- A healthcheck python script in that can be run externally to periodically check if the service is up and its clock is not desynchronised by more than 1 second.
+- A healthcheck python script that can be run externally to periodically check if the service is up and its clock is not desynchronised by more than 1 second.
 
 ### Prerequisites 📋
 
