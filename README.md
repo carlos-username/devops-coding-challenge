@@ -38,7 +38,7 @@ The repository contains a set of templates launching the following:
 
 ## Deployment 📦
 
-Configure amazon keys (aws_secret_key and aws_access_key) which can be retrieved fromn amazon console for your user:
+Configure amazon keys (aws_secret_key and aws_access_key) which can be retrieved from amazon console for your user:
 ```
 $ aws configure
 AWS Access Key ID [None]: aws_access_key
