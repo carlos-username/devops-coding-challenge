@@ -1,0 +1,92 @@
+- hosts: localhost
+  connection: local
+  gather_facts: no
+  vars:
+    vpc_template: infrastructure/vpc.yaml
+    security_template: infrastructure/security-groups.yaml
+    load_balancer: infrastructure/load-balancers.yaml
+    ecs_cluster: infrastructure/ecs-cluster.yaml
+    flask_service: services/WebService.yaml
+    #nginx_proxy: services/nginx_proxy_pass.yaml
+    stacks:
+      - VPC-ECS
+      - SEC-ECS
+      - LB-ECS
+      - ECS-Cluster
+      - FlaskWebService
+      - NginxProxy
+  tasks:
+    - name: Create VPC with pair of public and private subnets accross two AZ zones and an internet Gateway with default route
+      cloudformation:
+        stack_name: VPC-ECS1
+        state: present
+        template: "{{ vpc_template }}"
+        template_parameters:
+          EnvironmentName: VPC-ECS1
+          VpcCIDR: 10.180.0.0/16
+          PublicSubnet1CIDR: 10.180.8.0/21
+          PublicSubnet2CIDR: 10.180.16.0/21
+          PrivateSubnet1CIDR: 10.180.24.0/21
+          PrivateSubnet2CIDR: 10.180.32.0/21
+        region: eu-central-1
+      register: vpc_stack
+
+    - name: Creating security groups
+      cloudformation:
+        stack_name: SEC-ECS1
+        state: present
+        template: "{{ security_template }}"
+        template_parameters:
+          EnvironmentName: SEC-ECS1
+          VPC: "{{ vpc_stack.stack_outputs.VPC }}"
+        region: eu-central-1
+      register: sec_groups
+
+    - name: Create load balancer
+      cloudformation:
+        stack_name: ELB-ECS1
+        state: present
+        template: "{{ load_balancer }}"
+        template_parameters:
+          EnvironmentName: ELB-ECS1
+          VPC: "{{ vpc_stack.stack_outputs.VPC }}"
+          Subnets: "{{ vpc_stack.stack_outputs.PublicSubnets }}"
+          SecurityGroup: "{{ sec_groups.stack_outputs.LoadBalancerSecurityGroup }}"
+        region: eu-central-1
+      register: lb_stack
+
+    - name: Create ECS Cluster for containers
+      cloudformation:
+        stack_name: ECS-Cluster1
+        state: present
+        template: "{{ ecs_cluster }}"
+        template_parameters:
+          EnvironmentName: ECS-Cluster1
+          InstanceType: t2.micro
+          ClusterSize: 2
+          VPC: "{{ vpc_stack.stack_outputs.VPC }}"
+          SecurityGroup: "{{ sec_groups.stack_outputs.ECSHostSecurityGroup }}"
+          Subnets: "{{ vpc_stack.stack_outputs.PrivateSubnets }}"
+        region: eu-central-1
+      register: ecs_cluster
+
+    - name: Create FlaskWebService with python
+      cloudformation:
+        stack_name: FlaskWebService1
+        state: present
+        template: "{{ flask_service }}"
+        template_parameters:
+          VPC: "{{ vpc_stack.stack_outputs.VPC }}"
+          Cluster: "{{ ecs_cluster.stack_outputs.Cluster }}"
+          DesiredCount: 2
+          Listener: "{{ lb_stack.stack_outputs.Listener }}"
+          Path: /now
+          ECSServiceAutoScalingRoleARN: "{{ ecs_cluster.stack_outputs.ECSServiceAutoScalingRole }}"
+          DockerImage: 488598619227.dkr.ecr.eu-central-1.amazonaws.com/dockertestenv:flask-web-service
+        region: eu-central-1
+      register: flask_stack
+
+
+    # The new instance name is in stack.stack_outputs.DnsName ...
+    - debug: var=flask_stack.stack_outputs
+    
