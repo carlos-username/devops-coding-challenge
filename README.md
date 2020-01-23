@@ -26,8 +26,6 @@ For reference, the webservice was deployed by using MacOS Mojave 10.14.5.
 
 ### Overview 🔧
 
-![infrastructure-overview](images/architecture-overview.png)
-
 The repository contains a set of templates launching the following:
 
  - A [VPC](http://docs.aws.amazon.com/AmazonVPC/latest/UserGuide/VPC_Introduction.html) with public and private subnets, spanning an AWS region.
