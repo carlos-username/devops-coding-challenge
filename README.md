@@ -40,6 +40,15 @@ The repository contains a set of templates launching the following:
 
 ## Deployment 📦
 
+Configure amazon keys (aws_secret_key and aws_access_key) which can be retrieved fromn amazon console for your user:
+```
+$ aws configure
+AWS Access Key ID [None]: aws_access_key
+AWS Secret Access Key [None]: aws_secret_key
+Default region name [None]: us-west-2
+Default output format [None]: json
+```
+
 The orchestration as well as deployment happen through ansible, thus, you can trigger it as follows:
 ```
 ansible-playbook main.yml
