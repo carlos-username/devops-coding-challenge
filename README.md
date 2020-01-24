@@ -199,7 +199,7 @@ or in the "license" file accompanying this file. This file is distributed on an 
 
 ## Acknowledgements 🎁
 
-* Github API & valuable resources.
+* Amazon API & valuable resources.
 * Inspiration on the GithHub template: https://gist.githubusercontent.com/Villanuevand/6386899f70346d4580c723232524d35a/raw/8028158f59ba1995b0ca1afd3173bac3df539ca0/README-espa%25C3%25B1ol.md
 * Flask documentation.
 * References like https://www.digitalocean.com/community/tutorials/how-to-use-web-apis-in-python-3, https://github.com/PyGithub/PyGithub
