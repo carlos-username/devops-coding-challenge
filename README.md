@@ -120,10 +120,10 @@ This set of templates deploys the following network design:
 | Item | CIDR Range | Usable IPs | Description |
 | --- | --- | --- | --- |
 | VPC | 10.180.0.0/16 | 65,536 | The whole range used for the VPC and all subnets |
-| Public Subnet | 10.180.8.0/21 | 2,041 | The public subnet in the first Availability Zone |
-| Public Subnet | 10.180.16.0/21 | 2,041 | The public subnet in the second Availability Zone |
-| Private Subnet | 10.180.24.0/21 | 2,041 | The private subnet in the first Availability Zone |
-| Private Subnet | 10.180.32.0/21 | 2,041 | The private subnet in the second Availability Zone |
+| Public Subnet | 10.180.8.0/21 | 2,046 | The public subnet in the first Availability Zone |
+| Public Subnet | 10.180.16.0/21 | 2,046 | The public subnet in the second Availability Zone |
+| Private Subnet | 10.180.24.0/21 | 2,046 | The private subnet in the first Availability Zone |
+| Private Subnet | 10.180.32.0/21 | 2,046 | The private subnet in the second Availability Zone |
 
 Values can be modified within the ansible main.yml file.
 
